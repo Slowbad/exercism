@@ -11,6 +11,9 @@ defmodule Words do
   end
 
   def do_things(ele, acc) do
-    Map.put(acc, ele, 1)
+    case acc[ele] do
+      nil -> Map.put(acc, ele, 1)
+      _   -> Map.put(acc, ele, acc[ele] + 1)
+    end
   end
 end
