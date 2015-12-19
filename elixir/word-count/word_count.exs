@@ -6,12 +6,12 @@ defmodule Words do
   """
   @spec count(String.t) :: map()
   def count(sentence) do
-    String.replace(sentence, ~r/[\p{P}\p{S}]/, "")
-    |> String.split
+    Regex.scan(~r/(\p{L}+(-\p{L}+)?|\d+)/, sentence)
     |> List.foldl(%{}, &count_word_occurances/2)
   end
 
-  def count_word_occurances(word, word_counts) do
+  def count_word_occurances(word_match, word_counts) do
+    [word | _] = word_match
     case word_counts[word] do
       nil -> Map.put(word_counts, word, 1)
       _   -> Map.put(word_counts, word, word_counts[word] + 1)
