@@ -6,7 +6,8 @@ defmodule Words do
   """
   @spec count(String.t) :: map()
   def count(sentence) do
-    String.split(sentence)
+    String.replace(sentence, ~r/[\p{P}\p{S}]/, "")
+    |> String.split
     |> List.foldl(%{}, &count_word_occurances/2)
   end
 
