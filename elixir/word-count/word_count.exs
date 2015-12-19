@@ -6,7 +6,7 @@ defmodule Words do
   """
   @spec count(String.t) :: map()
   def count(sentence) do
-    Regex.scan(~r/(\p{L}+(-\p{L}+)?|\d+)/, sentence)
+    Regex.scan(~r/(*UTF)(\p{L}+(-\p{L}+)?|\d+)/, sentence)
     |> extract_scan_matches
     |> List.foldl(%{}, &count_word_occurances/2)
   end
