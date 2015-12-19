@@ -3,7 +3,7 @@ defmodule Bob do
     cond do
       silence?(input) -> "Fine. Be that way!"
       question?(input) -> "Sure."
-      input == String.upcase(input) and String.match?(input, ~r/\p{L}/) -> "Whoa, chill out!"
+      shouting?(input) -> "Whoa, chill out!"
       true -> "Whatever."
     end
   end
@@ -14,5 +14,9 @@ defmodule Bob do
 
   defp question?(input) do
     String.ends_with?(input, "?")
+  end
+
+  defp shouting?(input) do
+    input == String.upcase(input) and String.match?(input, ~r/\p{L}/)
   end
 end
