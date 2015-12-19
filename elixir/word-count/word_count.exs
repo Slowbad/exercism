@@ -12,9 +12,10 @@ defmodule Words do
   end
 
   defp count_word_occurances(word, word_counts) do
-    case word_counts[word] do
-      nil -> Map.put(word_counts, word, 1)
-      _   -> Map.put(word_counts, word, word_counts[word] + 1)
+    lower_word = String.downcase(word)
+    case word_counts[lower_word] do
+      nil -> Map.put(word_counts, lower_word, 1)
+      _   -> Map.put(word_counts, lower_word, word_counts[lower_word] + 1)
     end
   end
 
