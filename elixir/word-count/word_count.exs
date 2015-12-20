@@ -6,27 +6,22 @@ defmodule Words do
   """
   @spec count(String.t) :: map()
   def count(sentence) do
-    Regex.scan(~r/(*UTF)(\p{L}+(-\p{L}+)?|\d+)/, sentence)
-    |> extract_scan_matches
-    |> List.foldl(%{}, &count_word_occurances/2)
+    sentence
+    |> String.downcase
+    |> split_words
+    |> count_words
   end
 
-  defp count_word_occurances(word, word_counts) do
-    lower_word = String.downcase(word)
-    case word_counts[lower_word] do
-      nil -> Map.put(word_counts, lower_word, 1)
-      _   -> Map.put(word_counts, lower_word, word_counts[lower_word] + 1)
-    end
+  defp count_word_occurances([word], word_counts) do
+    Dict.update(word_counts, word, 1, &(&1 + 1))
   end
 
-  @doc """
-  Extract a list of regex matches from Regex.scan, ignoring capture groups.
-  """
-  defp extract_scan_matches(scan_list), do: extract_scan_matches(scan_list, [])
-  defp extract_scan_matches([], matches), do: matches
-  defp extract_scan_matches([head | tail], matches) do
-    [match | _] = head
-    extract_scan_matches(tail, [match | matches])
+  defp split_words(sentence) do
+    Regex.scan(~r/(*UTF)[\p{L}\d-]+/, sentence)
+  end
+
+  defp count_words(word_list) do
+    Enum.reduce(word_list, %{}, &count_word_occurances/2)
   end
 
 end
